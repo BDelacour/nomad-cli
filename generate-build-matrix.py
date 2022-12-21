@@ -33,16 +33,16 @@ def get_repo_tags():
 def generate_build_matrix(already_published, all_tags):
     not_published = [t for t in all_tags if t not in already_published]
     latest = all_tags[0]
-    to_publish = []
-    for tag in not_published:
-        image_tag = f"{DOCKER_NAMESPACE}/{DOCKER_IMAGE}:{tag}"
-        if tag == latest:
-            # Github doesn't allow newline so we encode it
-            image_tag += f"%0A{DOCKER_NAMESPACE}/{DOCKER_IMAGE}:latest"
-        to_publish.append(image_tag)
     matrix = {
-      "tags": to_publish
+      "tags": not_published
     }
+    if latest in not_published:
+        matrix["include"] = [
+            {
+                "tags": latest,
+                "latest": "true"
+            }
+        ]
     return f"MATRIX={json.dumps(matrix)}"
 
 
