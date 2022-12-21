@@ -6,7 +6,8 @@ from functools import cmp_to_key
 import requests
 import semver
 
-DOCKER_NAMESPACE = os.getenv("DOCKER_NAMESPACE")
+#DOCKER_NAMESPACE = os.getenv("DOCKER_NAMESPACE")
+DOCKER_NAMESPACE = "testing"
 assert DOCKER_NAMESPACE is not None
 DOCKER_IMAGE = os.getenv("DOCKER_IMAGE")
 assert DOCKER_IMAGE is not None

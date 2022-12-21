@@ -29,8 +29,7 @@ jobs:
         env:
           DOCKER_NAMESPACE: ${{ secrets.DOCKER_USERNAME }}
         run: |
-          TAGS=$(python generate-build-matrix.py)
-          echo "::set-output name=TAGS::$TAGS"
+          python generate-build-matrix.py >> $GITHUB_OUTPUT
 
   push_to_registry:
     name: Push Docker image to Docker Hub
