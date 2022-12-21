@@ -10,12 +10,12 @@ env:
   DOCKER_BUILDKIT: 1
 
 jobs:
-  get_versions_to_build:
+  generate_build_matrix:
     name: Call generate-build-matrix.py to configure next job matrix
     runs-on: ubuntu-latest
     container: python:3.10-slim
     outputs:
-      matrix: ${{ steps.set-matrix.outputs.TAGS }}
+      matrix: ${{ steps.build-matrix.outputs.TAGS }}
     steps:
       - name: Check out the repo
         uses: actions/checkout@v3
@@ -25,18 +25,18 @@ jobs:
           python -m pip install -r requirements.txt
 
       - name: Run get-versions-to-build.py script
-        id: set-matrix
+        id: build-matrix
         env:
           DOCKER_NAMESPACE: ${{ secrets.DOCKER_USERNAME }}
         run: python generate-build-matrix.py >> $GITHUB_OUTPUT
 
   push_to_registry:
     name: Push Docker image to Docker Hub
-    needs: get_versions_to_build
+    needs: generate_build_matrix
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        tags: ${{ fromJson(needs.get_versions_to_build.outputs.matrix) }}
+        tags: ${{ fromJson(needs.generate_build_matrix.outputs.matrix) }}
     steps:
       - name: Log in to Docker Hub
         uses: docker/login-action@f054a8b539a109f9f41c372932f1ae047eff08c9
@@ -52,7 +52,6 @@ jobs:
           tags: ${{ secrets.DOCKER_USERNAME }}/${{ env.DOCKER_IMAGE }}:${{ matrix.version }}
 
       - name: Push latest tag
-        if: ${{ matrix.latest }}
         uses: docker/build-push-action@ad44023a93711e3deb337508980b4b5e9bcdc5dc
         with:
           context: .

@@ -39,7 +39,7 @@ def generate_build_matrix(already_published, all_tags):
         if tag == latest:
             image_tag += f"\n{DOCKER_NAMESPACE}/{DOCKER_IMAGE}:latest"
         to_publish.append(image_tag)
-    return f"TAGS={json.dumps(to_publish)}"
+    return f"TAGS=\"{json.dumps(to_publish)}\""
 
 
 def main():
