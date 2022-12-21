@@ -6,6 +6,7 @@ on:
   workflow_dispatch:
 
 env:
+  DOCKER_NAMESPACE: delaco
   DOCKER_IMAGE: nomad-cli
   DOCKER_BUILDKIT: 1
 
@@ -26,8 +27,6 @@ jobs:
 
       - name: Run get-versions-to-build.py script
         id: build-matrix
-        env:
-          DOCKER_NAMESPACE: ${{ secrets.DOCKER_USERNAME }}
         run: |
           python generate-build-matrix.py >> $GITHUB_OUTPUT
 
@@ -41,7 +40,7 @@ jobs:
       - name: Log in to Docker Hub
         uses: docker/login-action@f054a8b539a109f9f41c372932f1ae047eff08c9
         with:
-          username: ${{ secrets.DOCKER_USERNAME }}
+          username: ${{ env.DOCKER_NAMESPACE }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
       - name: Build and push Docker image
