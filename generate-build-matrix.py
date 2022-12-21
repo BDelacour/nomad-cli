@@ -35,10 +35,10 @@ def generate_build_matrix(already_published, all_tags):
     latest = all_tags[0]
     to_publish = []
     for tag in not_published:
-        image_tag = f"testing/{DOCKER_IMAGE}:{tag}"
+        image_tag = f"{DOCKER_NAMESPACE}/{DOCKER_IMAGE}:{tag}"
         if tag == latest:
             # Github doesn't allow newline so we encode it
-            image_tag += f"%0Atesting/{DOCKER_IMAGE}:latest"
+            image_tag += f"%0A{DOCKER_NAMESPACE}/{DOCKER_IMAGE}:latest"
         to_publish.append(image_tag)
     matrix = {
       "tags": to_publish
