@@ -43,7 +43,7 @@ def generate_build_matrix(already_published, all_tags):
     matrix = {
       "tags": to_publish
     }
-    return f"TAGS=\"{json.dumps(matrix)}\""
+    return f"MATRIX={json.dumps(matrix)}"
 
 
 def main():
