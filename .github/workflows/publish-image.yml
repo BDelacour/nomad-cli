@@ -52,15 +52,15 @@ jobs:
         run: |
           printf "TAGS=${{ secrets.DOCKER_USERNAME }}/${{ env.DOCKER_IMAGE }}:${{ matrix.tags }}" >> $GITHUB_OUTPUT
           if [ "${{ matrix.tags }}" == "true"]; then
-            printf "%0A${{ secrets.DOCKER_USERNAME }}/${{ env.DOCKER_IMAGE }}:latest" >> $GITHUB_OUTPUT
+            printf ",${{ secrets.DOCKER_USERNAME }}/${{ env.DOCKER_IMAGE }}:latest" >> $GITHUB_OUTPUT
           fi
-          printf "%0A" >> $GITHUB_OUTPUT
+          printf "\n" >> $GITHUB_OUTPUT
 
       - name: Build and push Docker image
         uses: docker/build-push-action@ad44023a93711e3deb337508980b4b5e9bcdc5dc
         with:
           context: .
           push: true
-          build-args:
-            - VERSION=${{ matrix.tags }}
+          build-args: |
+            VERSION=${{ matrix.tags }}
           tags: ${{ steps.generate-image-tags.outputs.TAGS }}
