@@ -29,13 +29,8 @@ jobs:
         env:
           DOCKER_NAMESPACE: ${{ secrets.DOCKER_USERNAME }}
         run: |
-          content=$(python generate-build-matrix.py)
-          # the following lines are only required for multi line json
-          content="${content//'%'/'%25'}"
-          content="${content//$'\n'/'%0A'}"
-          content="${content//$'\r'/'%0D'}"
-          # end of optional handling for multi line json
-          echo "::set-output name=TAGS::$content"
+          TAGS=$(python generate-build-matrix.py)
+          echo "::set-output name=TAGS::$TAGS"
 
   push_to_registry:
     name: Push Docker image to Docker Hub
