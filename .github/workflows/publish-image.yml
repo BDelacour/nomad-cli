@@ -62,5 +62,5 @@ jobs:
           context: .
           push: true
           build-args:
-            VERSION: ${{ matrix.tags }}
+            - VERSION=${{ matrix.tags }}
           tags: ${{ steps.generate-image-tags.outputs.TAGS }}
