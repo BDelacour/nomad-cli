@@ -34,6 +34,7 @@ jobs:
   push_to_registry:
     name: Push Docker image to Docker Hub
     needs: generate_build_matrix
+    if: ${{ fromJson(needs.generate_build_matrix.outputs.matrix).jobs != [] }}
     runs-on: ubuntu-latest
     strategy:
       matrix: ${{ fromJson(needs.generate_build_matrix.outputs.matrix) }}
@@ -50,11 +51,11 @@ jobs:
       - name: Generate image tags
         id: generate-image-tags
         run: |
-          printf "TAGS=${{ secrets.DOCKER_USERNAME }}/${{ env.DOCKER_IMAGE }}:${{ matrix.tags }}" >> $GITHUB_OUTPUT
-          if [ "${{ matrix.tags }}" == "true"]; then
-            printf ",${{ secrets.DOCKER_USERNAME }}/${{ env.DOCKER_IMAGE }}:latest" >> $GITHUB_OUTPUT
+          content="TAGS=${{ secrets.DOCKER_USERNAME }}/${{ env.DOCKER_IMAGE }}:${{ matrix.tags }}"
+          if [ "${{ matrix.latest }}" == "true"]; then
+            content+=",${{ secrets.DOCKER_USERNAME }}/${{ env.DOCKER_IMAGE }}:latest"
           fi
-          printf "\n" >> $GITHUB_OUTPUT
+          printf "$content\n" >> $GITHUB_OUTPUT
 
       - name: Build and push Docker image
         uses: docker/build-push-action@ad44023a93711e3deb337508980b4b5e9bcdc5dc
