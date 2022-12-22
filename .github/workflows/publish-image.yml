@@ -52,7 +52,7 @@ jobs:
         id: generate-image-tags
         run: |
           content="TAGS=${{ secrets.DOCKER_USERNAME }}/${{ env.DOCKER_IMAGE }}:${{ matrix.tags }}"
-          if [ "${{ matrix.latest }}" == "true"]; then
+          if [ "${{ matrix.latest }}" == "true" ]; then
             content+=",${{ secrets.DOCKER_USERNAME }}/${{ env.DOCKER_IMAGE }}:latest"
           fi
           printf "$content\n" >> $GITHUB_OUTPUT
