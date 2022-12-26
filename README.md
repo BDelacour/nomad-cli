@@ -1,8 +1,9 @@
 # nomad-cli
 
 This repository builds Docker image with [Nomad](https://www.nomadproject.io/) binary in it.
+See https://github.com/BDelacour/nomad-cli for details.
 
-*Disclaimer : It is a unofficial image and it is meant to be used as utility for your deployment pipelines.*
+*Disclaimer : It is an unofficial image and it is meant to be used as utility for your deployment pipelines.*
 
 ## Usage
 
