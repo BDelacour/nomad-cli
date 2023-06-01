@@ -1,8 +1,6 @@
-ARG VERSION
-ARG IMAGE
-
 FROM curlimages/curl:latest AS builder
 
+ARG VERSION
 RUN set -eux; \
     ARCHIVE="nomad_${VERSION}_linux_amd64.zip"; \
     curl -s -o /tmp/nomad.zip https://releases.hashicorp.com/nomad/${VERSION}/${ARCHIVE}; \
@@ -12,6 +10,7 @@ RUN set -eux; \
     }; \
     unzip -d /tmp /tmp/nomad.zip;
 
+ARG IMAGE
 FROM $IMAGE
 
 COPY --from=builder /tmp/nomad /usr/local/bin/nomad
