@@ -49,6 +49,7 @@ def generate_build_matrix(already_published, all_tags):
 
             include = {
                 "tags": suffixed_tag,
+                "version": tag,
                 "image": distrib
             }
             if distrib == "debian:bullseye" and not latest_selected:
