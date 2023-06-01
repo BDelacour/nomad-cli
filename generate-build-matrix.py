@@ -31,18 +31,33 @@ def get_repo_tags():
 
 
 def generate_build_matrix(already_published, all_tags):
-    not_published = [t for t in all_tags if t not in already_published]
-    latest = all_tags[0]
-    matrix = {
-      "tags": not_published
+    distribs_tagsuffix = {
+        "alpine:3.17": "alpine-3.17",
+        "alpine:3.18": "alpine-3.18",
+        "debian:buster": "buster",
+        "debian:bullseye": "bullseye",
+        "debian:buster-slim": "buster-slim",
+        "debian:bullseye-slim": "bullseye-slim"
     }
-    if latest in not_published:
-        matrix["include"] = [
-            {
-                "tags": latest,
-                "latest": "true"
+    latest_selected = False
+    includes = []
+    for tag in all_tags:
+        for distrib, suffix in distribs_tagsuffix.items():
+            suffixed_tag = f"{tag}-{suffix}"
+
+            include = {
+                "tags": suffixed_tag,
+                "image": distrib
             }
-        ]
+            if distrib == "debian:bullseye" and not latest_selected:
+                latest_selected = True
+                include["latest"] = "true"
+            if suffixed_tag not in already_published:
+                includes.append(include)
+    matrix = {
+        "tags": list(map(lambda i: i["tags"], includes)),
+        "include": includes
+    }
     return f"MATRIX={json.dumps(matrix)}"
 
 

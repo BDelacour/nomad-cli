@@ -64,4 +64,5 @@ jobs:
           push: true
           build-args: |
             VERSION=${{ matrix.tags }}
+            IMAGE=${{ matrix.image }}
           tags: ${{ steps.generate-image-tags.outputs.TAGS }}
