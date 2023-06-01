@@ -70,10 +70,10 @@ jobs:
           if [ "${{ matrix.bullseye }}" == "true" ]; then
             content+=",${{ secrets.DOCKER_USERNAME }}/${{ env.DOCKER_IMAGE }}:bullseye"
           fi
-          if [ "${{ matrix.buster-slim }}" == "true" ]; then
+          if [ "${{ matrix.busterslim }}" == "true" ]; then
             content+=",${{ secrets.DOCKER_USERNAME }}/${{ env.DOCKER_IMAGE }}:buster-slim"
           fi
-          if [ "${{ matrix.bullseye-slim }}" == "true" ]; then
+          if [ "${{ matrix.bullseyeslim }}" == "true" ]; then
             content+=",${{ secrets.DOCKER_USERNAME }}/${{ env.DOCKER_IMAGE }}:bullseye-slim"
           fi
           printf "$content\n" >> $GITHUB_OUTPUT
