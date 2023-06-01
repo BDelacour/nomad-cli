@@ -11,6 +11,8 @@ assert DOCKER_NAMESPACE is not None
 DOCKER_IMAGE = os.getenv("DOCKER_IMAGE")
 assert DOCKER_IMAGE is not None
 
+MATRIX_LIMIT = 256
+
 
 def get_published_image_tags():
     response = requests.get(f"https://registry.hub.docker.com/v2/namespaces/{DOCKER_NAMESPACE}/repositories/{DOCKER_IMAGE}/tags?page_size=100")
@@ -52,7 +54,7 @@ def generate_build_matrix(already_published, all_tags):
             if distrib == "debian:bullseye" and not latest_selected:
                 latest_selected = True
                 include["latest"] = "true"
-            if suffixed_tag not in already_published:
+            if suffixed_tag not in already_published and len(includes) < MATRIX_LIMIT:
                 includes.append(include)
     matrix = {
         "tags": list(map(lambda i: i["tags"], includes)),
