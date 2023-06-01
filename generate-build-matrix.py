@@ -33,7 +33,7 @@ def get_repo_tags():
 
 
 def generate_build_matrix(already_published, all_tags):
-    distribs_tagsuffix = {
+    distrib_tagsuffix = {
         "alpine:3.17": "alpine-3.17",
         "alpine:3.18": "alpine-3.18",
         "debian:buster": "buster",
@@ -41,10 +41,18 @@ def generate_build_matrix(already_published, all_tags):
         "debian:buster-slim": "buster-slim",
         "debian:bullseye-slim": "bullseye-slim"
     }
-    latest_selected = False
+    shortened_tag_selected = {
+        "latest": False,
+        "alpine-3.17": False,
+        "alpine-3.18": False,
+        "buster": False,
+        "bullseye": False,
+        "buster-slim": False,
+        "bullseye-slim": False
+    }
     includes = []
     for tag in all_tags:
-        for distrib, suffix in distribs_tagsuffix.items():
+        for distrib, suffix in distrib_tagsuffix.items():
             suffixed_tag = f"{tag}-{suffix}"
 
             include = {
@@ -52,9 +60,10 @@ def generate_build_matrix(already_published, all_tags):
                 "version": tag,
                 "image": distrib
             }
-            if distrib == "debian:bullseye" and not latest_selected:
-                latest_selected = True
-                include["latest"] = "true"
+            for st in shortened_tag_selected.keys():
+                if st == distrib and shortened_tag_selected[st] == False:
+                    shortened_tag_selected[st] = True
+                    include[st.replace("-", "").replace(".", "-")] = "true"
             if suffixed_tag not in already_published and len(includes) < MATRIX_LIMIT:
                 includes.append(include)
     matrix = {

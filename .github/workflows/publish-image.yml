@@ -55,6 +55,27 @@ jobs:
           if [ "${{ matrix.latest }}" == "true" ]; then
             content+=",${{ secrets.DOCKER_USERNAME }}/${{ env.DOCKER_IMAGE }}:latest"
           fi
+          if [ "${{ matrix.alpine }}" == "true" ]; then
+            content+=",${{ secrets.DOCKER_USERNAME }}/${{ env.DOCKER_IMAGE }}:alpine"
+          fi
+          if [ "${{ matrix.alpine3-17 }}" == "true" ]; then
+            content+=",${{ secrets.DOCKER_USERNAME }}/${{ env.DOCKER_IMAGE }}:alpine-3.17"
+          fi
+          if [ "${{ matrix.alpine3-18 }}" == "true" ]; then
+            content+=",${{ secrets.DOCKER_USERNAME }}/${{ env.DOCKER_IMAGE }}:alpine-3.18"
+          fi
+          if [ "${{ matrix.buster }}" == "true" ]; then
+            content+=",${{ secrets.DOCKER_USERNAME }}/${{ env.DOCKER_IMAGE }}:buster"
+          fi
+          if [ "${{ matrix.bullseye }}" == "true" ]; then
+            content+=",${{ secrets.DOCKER_USERNAME }}/${{ env.DOCKER_IMAGE }}:latest"
+          fi
+          if [ "${{ matrix.buster-slim }}" == "true" ]; then
+            content+=",${{ secrets.DOCKER_USERNAME }}/${{ env.DOCKER_IMAGE }}:buster-slim"
+          fi
+          if [ "${{ matrix.bullseye-slim }}" == "true" ]; then
+            content+=",${{ secrets.DOCKER_USERNAME }}/${{ env.DOCKER_IMAGE }}:latest-slim"
+          fi
           printf "$content\n" >> $GITHUB_OUTPUT
 
       - name: Build and push Docker image
