@@ -61,7 +61,7 @@ def generate_build_matrix(already_published, all_tags):
                 "base_image": distrib
             }
             for st in shortened_tag_selected.keys():
-                if st == distrib and shortened_tag_selected[st] == False:
+                if (st == suffix or st == "latest" and suffix == "bullseye") and shortened_tag_selected[st] == False:
                     shortened_tag_selected[st] = True
                     include[st.replace("-", "").replace(".", "-")] = "true"
             if suffixed_tag not in already_published and len(includes) < MATRIX_LIMIT:
