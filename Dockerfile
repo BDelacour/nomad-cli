@@ -10,7 +10,7 @@ RUN set -eux; \
     }; \
     unzip -d /tmp /tmp/nomad.zip;
 
-ARG IMAGE
-FROM $IMAGE
+ARG BASE_IMAGE
+FROM ${BASE_IMAGE}
 
 COPY --from=builder /tmp/nomad /usr/local/bin/nomad

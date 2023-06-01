@@ -58,7 +58,7 @@ def generate_build_matrix(already_published, all_tags):
             include = {
                 "tags": suffixed_tag,
                 "version": tag,
-                "image": distrib
+                "base_image": distrib
             }
             for st in shortened_tag_selected.keys():
                 if st == distrib and shortened_tag_selected[st] == False:

@@ -68,13 +68,13 @@ jobs:
             content+=",${{ secrets.DOCKER_USERNAME }}/${{ env.DOCKER_IMAGE }}:buster"
           fi
           if [ "${{ matrix.bullseye }}" == "true" ]; then
-            content+=",${{ secrets.DOCKER_USERNAME }}/${{ env.DOCKER_IMAGE }}:latest"
+            content+=",${{ secrets.DOCKER_USERNAME }}/${{ env.DOCKER_IMAGE }}:bullseye"
           fi
           if [ "${{ matrix.buster-slim }}" == "true" ]; then
             content+=",${{ secrets.DOCKER_USERNAME }}/${{ env.DOCKER_IMAGE }}:buster-slim"
           fi
           if [ "${{ matrix.bullseye-slim }}" == "true" ]; then
-            content+=",${{ secrets.DOCKER_USERNAME }}/${{ env.DOCKER_IMAGE }}:latest-slim"
+            content+=",${{ secrets.DOCKER_USERNAME }}/${{ env.DOCKER_IMAGE }}:bullseye-slim"
           fi
           printf "$content\n" >> $GITHUB_OUTPUT
 
@@ -85,5 +85,5 @@ jobs:
           push: true
           build-args: |
             VERSION=${{ matrix.version }}
-            IMAGE=${{ matrix.image }}
+            BASE_IMAGE=${{ matrix.base_image }}
           tags: ${{ steps.generate-image-tags.outputs.TAGS }}
