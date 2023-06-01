@@ -15,10 +15,17 @@ MATRIX_LIMIT = 256
 
 
 def get_published_image_tags():
-    response = requests.get(f"https://registry.hub.docker.com/v2/namespaces/{DOCKER_NAMESPACE}/repositories/{DOCKER_IMAGE}/tags?page_size=100")
-    response.raise_for_status()
+    next_page = f"https://registry.hub.docker.com/v2/namespaces/{DOCKER_NAMESPACE}/repositories/{DOCKER_IMAGE}/tags?page_size=100"
+    published_tags = []
+    while next_page:
+        response = requests.get(next_page)
+        response.raise_for_status()
 
-    return [result['name'] for result in response.json()['results']]
+        content = response.json()
+        published_tags.extend([result['name'] for result in content['results']])
+        next_page = content['next']
+
+    return published_tags
 
 
 def get_repo_tags():
