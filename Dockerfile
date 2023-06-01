@@ -1,3 +1,6 @@
+ARG VERSION
+ARG BASE_IMAGE
+
 FROM curlimages/curl:latest AS builder
 
 ARG VERSION
