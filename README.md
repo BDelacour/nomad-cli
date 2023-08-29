@@ -1,3 +1,5 @@
+# ⚠️ Superseded by Officiel Docker Image since 1.4 (https://hub.docker.com/r/hashicorp/nomad)
+
 # nomad-cli
 
 This repository builds Docker image with [Nomad](https://www.nomadproject.io/) binary in it.
